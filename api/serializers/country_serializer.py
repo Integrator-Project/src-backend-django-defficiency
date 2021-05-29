@@ -1,6 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
 from ..models import Country
-from .continent_serializer import ContinentSerializer
 
 
 class CountrySerializer(FlexFieldsModelSerializer):
@@ -17,5 +16,5 @@ class CountrySerializer(FlexFieldsModelSerializer):
             "native_name"
         ]
         expandable_fields = {
-            "continent": ContinentSerializer
+            "continent": "api.serializers.continent_serializer.ContinentSerializer"
         }
