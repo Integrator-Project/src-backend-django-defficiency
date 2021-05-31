@@ -30,6 +30,10 @@ ALLOWED_HOSTS = [
     '127.0.0.1'
 ]
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'defficiency.api.middleware.exception_handler.custom_exception_handler'
+}
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -51,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'defficiency.urls'
