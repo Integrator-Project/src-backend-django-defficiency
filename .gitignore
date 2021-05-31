@@ -1,2 +1,5 @@
 # Ignore .idea folder
 .idea/
+
+# Ignore .env variables
+defficiency/.env

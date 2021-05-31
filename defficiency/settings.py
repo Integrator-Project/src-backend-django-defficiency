@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from distutils.util import strtobool
+import environ
+
+# Environ read .env file
+environ.Env.read_env()
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_!90$4d$0*x+*-8f&--hejh+#rdw4gnorm9f+f!=+4%_3=z_46'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(strtobool(env('DEBUG')))
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -85,11 +91,11 @@ WSGI_APPLICATION = 'defficiency.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'defficiency_db',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': '',
-        'PORT': '3306',
+        'NAME': env('MYSQL_DB_NAME'),
+        'HOST': env('MYSQL_HOST'),
+        'USER': env('MYSQL_USER'),
+        'PASSWORD': env('MYSQL_PASSWORD'),
+        'PORT': env('MYSQL_PORT'),
         'OPTIONS': {
            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
