@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from distutils.util import strtobool
 import environ
 
 # Environ read .env file
@@ -19,22 +18,19 @@ environ.Env.read_env()
 env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_!90$4d$0*x+*-8f&--hejh+#rdw4gnorm9f+f!=+4%_3=z_46'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(strtobool(env('DEBUG')))
+DEBUG = env.bool('DEBUG', True)
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'defficiency.api.middleware.exception_handler.custom_exception_handler'
