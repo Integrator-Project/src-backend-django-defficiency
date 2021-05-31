@@ -25,11 +25,17 @@ SECRET_KEY = 'django-insecure-_!90$4d$0*x+*-8f&--hejh+#rdw4gnorm9f+f!=+4%_3=z_46
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1'
+]
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'defficiency.api.middleware.exception_handler.custom_exception_handler'
+}
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig',
+    'rest_framework',
+    'rest_flex_fields'
 ]
 
 MIDDLEWARE = [
@@ -46,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'defficiency.urls'
@@ -54,7 +63,7 @@ ROOT_URLCONF = 'defficiency.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [f'{BASE_DIR}/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,9 +84,27 @@ WSGI_APPLICATION = 'defficiency.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'defficiency_db',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': '',
+        'PORT': '3306',
+        'OPTIONS': {
+           'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
+    },
+    # 'sqlServer': {
+    #     'ENGINE': 'sql_server.pyodbc',
+    #     'NAME': 'defficiency_db',
+    #     'HOST': 'arekushi',
+    #     'USER': 'sa',
+    #     'PASSWORD': '123456',
+    #     'PORT': '',
+    #     'OPTIONS': {
+    #         'driver': 'SQL Server Native Client 11.0'
+    #     }
+    # }
 }
 
 
