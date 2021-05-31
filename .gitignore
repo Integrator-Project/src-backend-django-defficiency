@@ -3,3 +3,13 @@
 
 # Ignore .env variables
 defficiency/settings/.env
+
+# Ignore cache
+api/__pycache__/
+api/admin/__pycache__/
+api/migrations/__pycache__/
+api/models/__pycache__/
+api/serializers/__pycache__/
+api/views/__pycache__/
+defficiency/__pycache__/
+defficiency/settings/__pycache__/
