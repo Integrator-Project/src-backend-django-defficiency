@@ -1,5 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from ..models import DailyDeath
+from api.models import DailyDeath
 
 
 class DailyDeathSerializer(FlexFieldsModelSerializer):

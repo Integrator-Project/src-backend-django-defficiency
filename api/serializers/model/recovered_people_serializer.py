@@ -1,5 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from ..models import RecoveredPeople
+from api.models import RecoveredPeople
 
 
 class RecoveredPeopleSerializer(FlexFieldsModelSerializer):

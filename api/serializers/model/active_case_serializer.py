@@ -1,5 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from ..models import ActiveCase
+from api.models import ActiveCase
 
 
 class ActiveCaseSerializer(FlexFieldsModelSerializer):

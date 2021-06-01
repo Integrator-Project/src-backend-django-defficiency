@@ -1,5 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from ..models import Continent
+from api.models import Continent
 
 
 class ContinentSerializer(FlexFieldsModelSerializer):

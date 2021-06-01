@@ -1,5 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from ..models import Country
+from api.models import Country
 
 
 class CountrySerializer(FlexFieldsModelSerializer):

@@ -1,0 +1,2 @@
+from .country_vaccination_data_request import CountryVaccinationDataRequest
+from .country_vaccination_data_request import LinksUrl

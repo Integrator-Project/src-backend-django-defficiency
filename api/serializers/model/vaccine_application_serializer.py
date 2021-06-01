@@ -1,5 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from ..models import VaccineApplication
+from api.models import VaccineApplication
 
 
 class VaccineApplicationSerializer(FlexFieldsModelSerializer):

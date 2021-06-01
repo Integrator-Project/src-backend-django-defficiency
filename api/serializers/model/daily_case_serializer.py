@@ -1,5 +1,5 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from ..models import DailyCase
+from api.models import DailyCase
 
 
 class DailyCaseSerializer(FlexFieldsModelSerializer):
