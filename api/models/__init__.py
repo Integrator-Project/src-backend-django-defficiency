@@ -1,5 +1,4 @@
 from .entity import Entity
-from .continent import Continent
 from .country import Country
 from .translation_country import TranslationsCountry
 from .active_case import ActiveCase

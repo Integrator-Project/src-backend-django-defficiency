@@ -1,5 +1,4 @@
 from .active_case_serializer import ActiveCaseSerializer
-from .continent_serializer import ContinentSerializer
 from .country_serializer import CountrySerializer
 from .daily_case_serializer import DailyCaseSerializer
 from .daily_death_serializer import DailyDeathSerializer

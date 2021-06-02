@@ -1,14 +1,12 @@
 from django.db import models
+
+from utils import auto_str
 from .daily import Daily
 from ..apps import ApiConfig
 
 
 class DailyCase(Daily):
     pass
-
-    def __str__(self):
-        return f"DATE: {self.date_time}\n" \
-               f"TOTAL: {self.total}\n"
 
     class Meta:
         app_label = ApiConfig.name

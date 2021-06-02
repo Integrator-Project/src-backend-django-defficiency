@@ -5,7 +5,6 @@ from .views import *
 api_router = routers.DefaultRouter()
 
 api_router.register(r"active-case", ActiveCaseViewSet)
-api_router.register(r"continent", ContinentViewSet)
 api_router.register(r"country", CountryViewSet)
 api_router.register(r"daily-case", DailyCaseViewSet)
 api_router.register(r"daily-death", DailyDeathViewSet)

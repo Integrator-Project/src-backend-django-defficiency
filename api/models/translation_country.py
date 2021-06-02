@@ -17,18 +17,6 @@ class TranslationsCountry(Entity):
     hr = models.CharField(max_length=100)
     fa = models.CharField(max_length=100)
 
-    def __str__(self):
-        return f"DE: {self.de}\n" \
-               f"ES: {self.es}\n" \
-               f"FR: {self.fr}\n" \
-               f"JA: {self.ja}\n" \
-               f"IT: {self.it}\n" \
-               f"BR: {self.br}\n" \
-               f"PT: {self.pt}\n" \
-               f"NL: {self.nl}\n" \
-               f"HR: {self.hr}\n" \
-               f"FA: {self.fa}\n"
-
     class Meta:
         app_label = ApiConfig.name
         verbose_name_plural = "translation countries"

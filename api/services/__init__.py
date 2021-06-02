@@ -1,1 +1,1 @@
-from .country_data_service import get_content_country_vaccination
+from .country_data_service import *

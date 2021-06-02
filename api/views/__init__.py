@@ -1,5 +1,4 @@
 from .active_case_view import ActiveCaseViewSet
-from .countinent_view import ContinentViewSet
 from .country_view import CountryViewSet
 from .daily_case_view import DailyCaseViewSet
 from .daily_death_view import DailyDeathViewSet

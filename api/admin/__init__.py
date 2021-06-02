@@ -1,5 +1,4 @@
 from .active_case_admin import ActiveCaseAdmin
-from .continent_admin import ContinentAdmin
 from .country_admin import CountryAdmin
 from .daily_case_admin import DailyCaseAdmin
 from .daily_death_admin import DailyDeathAdmin

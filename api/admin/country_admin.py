@@ -4,4 +4,4 @@ from ..models import Country
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ("id", "enabled", "name", "continent")
+    list_display = ("id", "enabled", "name")

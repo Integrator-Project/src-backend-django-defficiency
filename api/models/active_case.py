@@ -6,10 +6,6 @@ from ..apps import ApiConfig
 class ActiveCase(Daily):
     pass
 
-    def __str__(self):
-        return f"DATE: {self.date_time}\n" \
-               f"TOTAL: {self.total}\n"
-
     class Meta:
         app_label = ApiConfig.name
         db_table = f'{app_label}.active_case'
