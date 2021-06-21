@@ -32,9 +32,9 @@ DEBUG = env.bool('DEBUG', True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
-REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'defficiency.api.middleware.exception_handler.custom_exception_handler'
-}
+# REST_FRAMEWORK = {
+#     'EXCEPTION_HANDLER': 'defficiency.api.middleware.exception_handler.custom_exception_handler'
+# }
 
 
 # Application definition
