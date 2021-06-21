@@ -4,4 +4,4 @@ from ..models import DailyDeath
 
 @admin.register(DailyDeath)
 class DailyDeathAdmin(admin.ModelAdmin):
-    list_display = ("id", "enabled", "date_time", "total", "country")
+    list_display = ("id", "enabled", "date_field", "total", "country")

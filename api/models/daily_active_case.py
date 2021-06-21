@@ -3,9 +3,9 @@ from .daily import Daily
 from ..apps import ApiConfig
 
 
-class ActiveCase(Daily):
+class DailyActiveCase(Daily):
     pass
 
     class Meta:
         app_label = ApiConfig.name
-        db_table = f'{app_label}.active_case'
+        db_table = f'{app_label}.daily_active_case'

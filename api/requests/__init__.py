@@ -1,3 +1,6 @@
+from .github_data_repo_request import GithubDataRepoRequest
 from .country_vaccination_data_request import CountryVaccinationDataRequest
-from .country_vaccination_data_request import LinksUrl
+from .github_data_repo_request import LinksUrl
 from .contry_data_request import CountryDataRequest
+from .covid19_api_country_request import Covid19APICountryRequest
+from .covid19_api_country_data_request import Covid19CountryDataRequest

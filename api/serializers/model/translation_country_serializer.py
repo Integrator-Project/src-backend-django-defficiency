@@ -11,5 +11,5 @@ class TranslationsCountrySerializer(FlexFieldsModelSerializer):
             "updated_on"
         ]
         expandable_fields = {
-            "country": "api.serializers.country_serializer.CountrySerializer"
+            "country": "api.serializers.model.country_serializer.CountrySerializer"
         }

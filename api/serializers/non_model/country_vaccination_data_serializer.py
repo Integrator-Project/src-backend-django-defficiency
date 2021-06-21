@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.requests import CountryVaccinationDataRequest, LinksUrl
+from api.requests import GithubDataRepoRequest, LinksUrl
 
 
 class LinksUrlSerializer(serializers.Serializer):
@@ -36,4 +36,4 @@ class CountryVaccinationDataSerializer(serializers.Serializer):
         return instance
 
     def create(self, validated_data):
-        return CountryVaccinationDataRequest(**validated_data)
+        return GithubDataRepoRequest(**validated_data)

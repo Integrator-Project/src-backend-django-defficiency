@@ -1,9 +1,8 @@
 from rest_flex_fields import FlexFieldsModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from ..models import Country
 from ..serializers import CountrySerializer
-from ..services import post_all_countries_data, get_all_countries_data
+from ..services import *
 
 
 class CountryViewSet(FlexFieldsModelViewSet):
@@ -12,8 +11,10 @@ class CountryViewSet(FlexFieldsModelViewSet):
 
     @action(methods=['GET'], detail=False)
     def test(self, request):
-        # response = get_all_countries_data()
-        # serializer = self.get_serializer_class()
-        # test = serializer(response, many=True)
-
+        # post_vaccine_application()
+        # post_all_countries_data()
+        # get_all_vaccine_application_by_country(1)
+        # post_global_daily_death()
+        # post_global_daily_case()
+        # post_global_all()
         return Response(True)

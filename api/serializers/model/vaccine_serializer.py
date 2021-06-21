@@ -5,4 +5,8 @@ from api.models import Vaccine
 class VaccineSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = Vaccine
-        fields = "__all__"
+        exclude = [
+            "enabled",
+            "created_on",
+            "updated_on"
+        ]
