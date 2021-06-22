@@ -1,6 +1,77 @@
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from api.models import DailyConfirmedCase
+from django.db import connection
 from api.requests.daily_request import DailyRequest
+
+
+def select_total_confirmed_per_month(alpha2_code):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+            SELECT
+                cc.total,
+                cc.date_field
+            FROM
+                `api.daily_confirmed_case` cc
+            INNER JOIN
+                `api.country` c ON (cc.country_id = c.id) 
+            WHERE
+                c.alpha2_code = %s
+                AND date_field IN (SELECT
+                                    CONCAT(ano, '-', mes, '-', dia)
+                                FROM (SELECT 
+                                    MONTH(cc.date_field) as mes,
+                                    YEAR(cc.date_field) as ano,
+                                    MAX(DAY(cc.date_field)) as dia 
+                                    FROM
+                                        `api.daily_confirmed_case` cc
+                                    INNER JOIN
+                                        `api.country` c ON (cc.country_id = c.id) 
+                                    WHERE
+                                        c.alpha2_code = %s
+                                    GROUP BY 1, 2) as ultimo)
+                                ORDER BY date_field
+        ''', [alpha2_code, alpha2_code])
+
+        row = cursor.fetchall()
+
+    return row
+
+
+def select_all_confirmed_country(country):
+    with connection.cursor() as cursor:
+        cursor.execute('''
+            SELECT
+                SUM(total),
+                date_field
+            FROM
+                `api.daily_confirmed_case` v
+            INNER JOIN
+                `api.country` c ON (c.id = v.country_id)
+            WHERE
+                date_field = (SELECT max(date_field) FROM `api.daily_confirmed_case`)
+                AND c.alpha2_code = %s
+        ''', [country])
+
+        row = cursor.fetchone()
+
+    return row
+
+
+def select_all_confirmed_global():
+    with connection.cursor() as cursor:
+        cursor.execute('''
+            SELECT
+                SUM(total),
+                date_field
+            FROM
+                `api.daily_confirmed_case` 
+            WHERE
+                date_field = (SELECT max(date_field) FROM `api.daily_confirmed_case`)
+        ''')
+
+        row = cursor.fetchone()
+
+    return row
 
 
 def save_daily_confirmed_list(requests):

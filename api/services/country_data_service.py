@@ -11,6 +11,43 @@ rest_countries = 'REST_COUNTRIES'
 covid19_api = 'COVID19_API'
 
 
+def total_daily_data(alpha2_code):
+    if alpha2_code is None:
+        from_data = 'World'
+        c_value, c_date = select_all_confirmed_global()
+        a_value, a_date = select_all_active_global()
+        r_value, r_date = select_all_recovered_global()
+        d_value, d_date = select_all_death_global()
+    else:
+        from_data = Country.objects.get(alpha2_code=alpha2_code).name
+        c_value, c_date = select_all_confirmed_country(alpha2_code)
+        a_value, a_date = select_all_active_country(alpha2_code)
+        r_value, r_date = select_all_recovered_country(alpha2_code)
+        d_value, d_date = select_all_death_country(alpha2_code)
+
+    return {
+        'from': from_data,
+        'confirmed': {'value': c_value, 'last_update': c_date},
+        'active': {'value': a_value, 'last_update': a_date},
+        'recovered': {'value': r_value, 'last_update': r_date},
+        'death': {'value': d_value, 'last_update': d_date}
+    }
+
+
+def data_per_month(alpha2_code):
+    confirmed = select_total_confirmed_per_month(alpha2_code)
+    active = select_total_active_per_month(alpha2_code)
+    recovered = select_total_recovered_per_month(alpha2_code)
+    death = select_total_death_per_month(alpha2_code)
+
+    return {
+        'confirmed': confirmed,
+        'active': active,
+        'recovered': recovered,
+        'death': death
+    }
+
+
 def update_all_countries_slug():
     countries_request = get_all_countries_data_covid19_api()
 
