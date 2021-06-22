@@ -1,8 +1,8 @@
-from api.models import Vaccine
+from api.models import Vaccine, Country
 from api.repositories import select_data_vaccination, select_started_vaccination, \
     select_total_vaccination_per_month, select_vaccines_applied, select_most_percentage_second, select_most_percentage_first, \
     select_most_vaccinated, select_world_data
-from api.serializers import VaccineSerializer
+from api.serializers import VaccineSerializer, CountrySerializer
 from utils import MostType
 
 
@@ -26,10 +26,9 @@ def most(limit, type):
         MostType.MOST_PERCENTAGE_FIRST: ('percentage', select_most_percentage_first(limit))
     }.get(type_enum)
 
-    for name, population, result in result:
+    for alpha2_code, result in result:
         list_json.append({
-            'name': name,
-            'population': population,
+            'country': CountrySerializer(Country.objects.get(alpha2_code=alpha2_code)).data,
             property_name: result
         })
 

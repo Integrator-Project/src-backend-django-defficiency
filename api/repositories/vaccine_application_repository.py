@@ -28,8 +28,7 @@ def select_most_percentage_second(limit):
     with connection.cursor() as cursor:
         cursor.execute('''
             SELECT
-                c.name,
-                c.population,
+                c.alpha2_code,
                 SUM(v.people_fully_vaccinated) * 100 / c.population AS porcentagem
             FROM
                 `api.vaccine_application` v
@@ -38,7 +37,7 @@ def select_most_percentage_second(limit):
             WHERE
                 date_field = (SELECT MAX(date_field) FROM `api.vaccine_application`)
             GROUP BY c.name, c.population
-            ORDER BY 3 DESC
+            ORDER BY 2 DESC
             LIMIT %s
         ''', [int(limit)])
 
@@ -51,8 +50,7 @@ def select_most_percentage_first(limit):
     with connection.cursor() as cursor:
         cursor.execute('''
             SELECT
-                c.name,
-                c.population,
+                c.alpha2_code,
                 SUM(v.people_vaccinated) * 100 / c.population AS porcentagem
             FROM
                 `api.vaccine_application` v
@@ -61,7 +59,7 @@ def select_most_percentage_first(limit):
             WHERE
                 date_field = (SELECT MAX(date_field) FROM `api.vaccine_application`)
             GROUP BY c.name, c.population
-            ORDER BY 3 DESC
+            ORDER BY 2 DESC
             LIMIT %s
         ''', [int(limit)])
 
@@ -74,8 +72,7 @@ def select_most_vaccinated(limit):
     with connection.cursor() as cursor:
         cursor.execute('''
             SELECT
-                c.name,
-                c.population,
+                c.alpha2_code,
                 SUM(total_vaccinations) FROM `api.vaccine_application` v
             INNER JOIN
                 `api.country` c ON (c.id = v.country_id)
