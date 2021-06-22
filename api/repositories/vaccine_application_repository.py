@@ -98,7 +98,21 @@ def select_vaccines_applied(alpha2_code):
         if alpha2_code is not None:
             cursor.execute('''
                 SELECT
-                    DISTINCT v.* FROM `api.vaccine_application_vaccine` vav
+                    DISTINCT v.id,
+                    v.created_on,
+                    v.updated_on,
+                    v.enabled,
+                    v.name,
+                    v.type,
+                    v.description,
+                    v.producer,
+                    v.CAS_number,
+                    v.drug_bank,
+                    v.UNII,
+                    v.KEGG,
+                    v.pub_chem_SID
+                FROM
+                    `api.vaccine_application_vaccine` vav
                 INNER JOIN
                     `api.vaccine_application` va ON (vav.vaccineApplication_id = va.id)
                 INNER JOIN
