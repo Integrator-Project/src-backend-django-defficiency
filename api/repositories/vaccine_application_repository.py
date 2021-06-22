@@ -93,18 +93,30 @@ def select_most_vaccinated(limit):
 
 def select_vaccines_applied(alpha2_code):
     with connection.cursor() as cursor:
-        cursor.execute('''
-            SELECT
-                DISTINCT v.* FROM `api.vaccine_application_vaccine` vav
-            INNER JOIN
-                `api.vaccine_application` va ON (vav.vaccineApplication_id = va.id)
-            INNER JOIN
-                `api.country` c ON (va.country_id = c.id)
-            INNER JOIN
-                `api.vaccine` v ON (v.id = vav.vaccine_id)
-            WHERE
-                c.alpha2_code = %s
-        ''', [alpha2_code])
+        if alpha2_code is not None:
+            cursor.execute('''
+                SELECT
+                    DISTINCT v.* FROM `api.vaccine_application_vaccine` vav
+                INNER JOIN
+                    `api.vaccine_application` va ON (vav.vaccineApplication_id = va.id)
+                INNER JOIN
+                    `api.country` c ON (va.country_id = c.id)
+                INNER JOIN
+                    `api.vaccine` v ON (v.id = vav.vaccine_id)
+                WHERE
+                    c.alpha2_code = %s
+            ''', [alpha2_code])
+        else:
+            cursor.execute('''
+                SELECT
+                    DISTINCT v.* FROM `api.vaccine_application_vaccine` vav
+                INNER JOIN
+                    `api.vaccine_application` va ON (vav.vaccineApplication_id = va.id)
+                INNER JOIN
+                    `api.country` c ON (va.country_id = c.id)
+                INNER JOIN
+                    `api.vaccine` v ON (v.id = vav.vaccine_id)
+            ''')
 
         row = cursor.fetchall()
 
@@ -152,20 +164,36 @@ def select_all_by_country(alpha2_code):
 
 def select_data_vaccination(alpha2_code):
     with connection.cursor() as cursor:
-        cursor.execute('''
-            SELECT
-                MAX(date_field) AS 'ULTIMA ATUALIZACAO',
-                SUM(v.people_fully_vaccinated) * 100 / c.population AS 'PORCENTAGEM SEGUNDA DOSE',
-                SUM(v.people_vaccinated) * 100 / c.population AS 'PORCENTAGEM PRIMEIRA DOSE',
-                SUM(total_vaccinations) AS 'TOTAL VACINACAO' 
-            FROM
-                `api.vaccine_application` v
-            INNER JOIN
-                `api.country` c ON (c.id = v.country_id)
-            WHERE
-                date_field = (SELECT MAX(date_field) FROM `api.vaccine_application`)
-                AND c.alpha2_code = %s
-        ''', [alpha2_code])
+        if alpha2_code is not None:
+            cursor.execute('''
+                SELECT
+                    MAX(date_field) AS 'ULTIMA ATUALIZACAO',
+                    SUM(v.people_fully_vaccinated) * 100 / c.population AS 'PORCENTAGEM SEGUNDA DOSE',
+                    SUM(v.people_vaccinated) * 100 / c.population AS 'PORCENTAGEM PRIMEIRA DOSE',
+                    SUM(total_vaccinations) AS 'TOTAL VACINACAO' 
+                FROM
+                    `api.vaccine_application` v
+                INNER JOIN
+                    `api.country` c ON (c.id = v.country_id)
+                WHERE
+                    date_field = (SELECT MAX(date_field) FROM `api.vaccine_application`)
+                    AND c.alpha2_code = %s
+            ''', [alpha2_code])
+        else:
+            cursor.execute('''
+                SELECT
+                    MAX(date_field) AS 'ULTIMA ATUALIZACAO',
+                    SUM(v.people_fully_vaccinated) * 100 / SUM(c.population) AS 'PORCENTAGEM SEGUNDA DOSE',
+                    SUM(v.people_vaccinated) * 100 / SUM(c.population) AS 'PORCENTAGEM PRIMEIRA DOSE',
+                    SUM(total_vaccinations) AS 'TOTAL VACINACAO' 
+                FROM
+                    `api.vaccine_application` v
+                INNER JOIN
+                    `api.country` c ON (c.id = v.country_id)
+                WHERE
+                    date_field = (SELECT MAX(date_field) FROM `api.vaccine_application`)
+            ''')
+
         row = cursor.fetchone()
 
     return row
@@ -173,14 +201,23 @@ def select_data_vaccination(alpha2_code):
 
 def select_started_vaccination(alpha2_code):
     with connection.cursor() as cursor:
-        cursor.execute('''
-            SELECT
-                MIN(date_field) AS 'INICIO VACINACAO' FROM `api.vaccine_application` v
-            INNER JOIN
-                `api.country` c ON (c.id = v.country_id)
-            WHERE
-                c.alpha2_code = %s
-        ''', [alpha2_code])
+        if alpha2_code is not None:
+            cursor.execute('''
+                SELECT
+                    MIN(date_field) AS 'INICIO VACINACAO' FROM `api.vaccine_application` v
+                INNER JOIN
+                    `api.country` c ON (c.id = v.country_id)
+                WHERE
+                    c.alpha2_code = %s
+            ''', [alpha2_code])
+        else:
+            cursor.execute('''
+                SELECT
+                    MIN(date_field) AS 'INICIO VACINACAO'
+                FROM
+                    `api.vaccine_application` v
+            ''')
+
         row = cursor.fetchone()
 
     return row

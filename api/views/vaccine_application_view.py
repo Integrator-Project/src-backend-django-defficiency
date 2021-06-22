@@ -14,25 +14,29 @@ class VaccineApplicationViewSet(FlexFieldsModelViewSet):
     serializer_class = VaccineApplicationSerializer
     permit_list_expands = ['country', 'vaccine']
 
-    @action(methods=['GET'],
-            detail=False,
-            url_path=r'data/(?P<alpha2_code>\D+)')
-    def get_vaccination_data(self, request, *args, **kwargs):
-        code = kwargs.get('alpha2_code')
-        return Response(vaccine_application_data(code))
+    # @action(methods=['GET'],
+    #         detail=False,
+    #         url_path=r'all/(?P<alpha2_code>\D+)')
+    # def get_all_by_country(self, request, *args, **kwargs):
+    #     code = kwargs.get('alpha2_code')
+    #     serializer = VaccineApplicationSerializer(
+    #         select_all_by_country(code),
+    #         omit=['country'],
+    #         expand=['vaccine'],
+    #         many=True)
+    #
+    #     return Response(serializer.data)
 
-    @action(methods=['GET'],
-            detail=False,
-            url_path=r'all/(?P<alpha2_code>\D+)')
-    def get_all_by_country(self, request, *args, **kwargs):
-        code = kwargs.get('alpha2_code')
-        serializer = VaccineApplicationSerializer(
-            select_all_by_country(code),
-            omit=['country'],
-            expand=['vaccine'],
-            many=True)
-
-        return Response(serializer.data)
+    # @action(methods=['GET'],
+    #         detail=False,
+    #         url_path=r'data')
+    # def get_vaccination_data(self, request, *args, **kwargs):
+    #     try:
+    #         alpha2_code = request.query_params['country']
+    #     except MultiValueDictKeyError:
+    #         alpha2_code = None
+    #
+    #     return Response(vaccine_application_data(alpha2_code))
 
     @action(methods=['GET'],
             detail=False,
@@ -53,10 +57,4 @@ class VaccineApplicationViewSet(FlexFieldsModelViewSet):
             most_type = MostType.MOST_VACCINATED
 
         return Response(most(limit, most_type))
-
-    @action(methods=['GET'],
-            detail=False,
-            url_path='world-data')
-    def get_world_data(self, request, *args, **kwargs):
-        return Response(world_data())
 

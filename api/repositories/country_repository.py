@@ -1,7 +1,21 @@
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db import connection
 from django.db.models import Q
 from api.requests import CountryDataRequest
 from ..models import Country, AlternativeNameCountry
+
+
+def world_population():
+    with connection.cursor() as cursor:
+        cursor.execute('''
+            SELECT
+                SUM(c.population)
+            FROM `api.country` c
+        ''')
+
+        row = cursor.fetchone()
+
+    return row
 
 
 def get_countries_with_slug():
@@ -11,8 +25,8 @@ def get_countries_with_slug():
     ''')
 
 
-def get_country_by_iso2(iso2: str):
-    return Country.objects.get(alpha2_code=iso2)
+def get_country_by_alpha2(alpha2: str):
+    return Country.objects.get(alpha2_code=alpha2)
 
 
 def get_country_by_name(name: str):

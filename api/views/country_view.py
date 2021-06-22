@@ -12,18 +12,27 @@ class CountryViewSet(FlexFieldsModelViewSet):
 
     @action(methods=['GET'],
             detail=False,
-            url_path='total-daily-data')
-    def get_total_daily_data(self, request, *args, **kwargs):
+            url_path='all-data')
+    def get_all_data(self, request, *args, **kwargs):
+        try:
+            response = all_data_country(request.query_params['country'])
+        except MultiValueDictKeyError:
+            response = all_data_country(None)
+
+        return Response(response)
+
+    @action(methods=['GET'],
+            detail=False,
+            url_path=r'daily-data-per-month')
+    def get_data_per_month(self, request, *args, **kwargs):
         try:
             alpha2_code = request.query_params['country']
         except MultiValueDictKeyError:
             alpha2_code = None
 
-        return Response(total_daily_data(alpha2_code))
+        try:
+            last_months = int(request.query_params['last-months']) - 1
+        except MultiValueDictKeyError:
+            last_months = 6
 
-    @action(methods=['GET'],
-            detail=False,
-            url_path=r'data-per-month/(?P<alpha2_code>\D+)')
-    def get_data_per_month(self, request, *args, **kwargs):
-        code = kwargs.get('alpha2_code')
-        return Response(data_per_month(code))
+        return Response(daily_data_per_month(alpha2_code, last_months))
