@@ -2,8 +2,8 @@ from rest_flex_fields import FlexFieldsModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from ..models import VaccineApplication
+from ..repositories import when_started_vaccination_by_country
 from ..serializers import VaccineApplicationSerializer
-from ..services import get_all_vaccine_application_by_country
 
 
 class VaccineApplicationViewSet(FlexFieldsModelViewSet):
@@ -11,10 +11,15 @@ class VaccineApplicationViewSet(FlexFieldsModelViewSet):
     serializer_class = VaccineApplicationSerializer
     permit_list_expands = ['country', 'vaccine']
 
-    # @action(methods=['GET'],
-    #         detail=False,
-    #         url_path=r'get-all-by-country')
-    # def get_all_by_country(self, request):
-    #     all_application = get_all_vaccine_application_by_country(1)
-    #     serializer = VaccineApplicationSerializer(all_application, many=True)
-    #     return Response(serializer.data)
+    @action(methods=['GET'],
+            detail=False,
+            url_path=r'started/(?P<alpha2_code>\D+)')
+    def started_vaccination(self, request, *args, **kwargs):
+        code = kwargs.get('alpha2_code')
+        response = when_started_vaccination_by_country(code)
+
+        response_dict = {
+            'date': response[0].isoformat()
+        }
+
+        return Response(response_dict)
