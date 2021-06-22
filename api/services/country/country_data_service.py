@@ -7,7 +7,7 @@ def all_data_country(alpha2_code):
     a_value, a_date = select_total_active(alpha2_code)
     r_value, r_date = select_total_recovered(alpha2_code)
     d_value, d_date = select_total_death(alpha2_code)
-    last_update, percentage_second, percentage_first, total = select_data_vaccination(alpha2_code)
+    last_update, percentage_second, percentage_first, total, first, second = select_data_vaccination(alpha2_code)
     started = select_started_vaccination(alpha2_code)
 
     list_vaccines = [Vaccine(*x) for x in select_vaccines_applied(alpha2_code)]
@@ -29,6 +29,8 @@ def all_data_country(alpha2_code):
             'percentage_second_dose': percentage_second,
             'percentage_first_dose': percentage_first,
             'total_vaccination': total,
+            'people_vaccinated': first,
+            'people_fully_vaccinated': second,
             'vaccines': vaccines.data,
         },
         'daily': {

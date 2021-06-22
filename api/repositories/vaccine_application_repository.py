@@ -29,6 +29,7 @@ def select_most_percentage_second(limit):
         cursor.execute('''
             SELECT
                 c.alpha2_code,
+                SUM(v.people_fully_vaccinated),
                 SUM(v.people_fully_vaccinated) * 100 / c.population AS porcentagem
             FROM
                 `api.vaccine_application` v
@@ -37,7 +38,7 @@ def select_most_percentage_second(limit):
             WHERE
                 date_field = (SELECT MAX(date_field) FROM `api.vaccine_application`)
             GROUP BY c.name, c.population
-            ORDER BY 2 DESC
+            ORDER BY 3 DESC
             LIMIT %s
         ''', [int(limit)])
 
@@ -51,6 +52,7 @@ def select_most_percentage_first(limit):
         cursor.execute('''
             SELECT
                 c.alpha2_code,
+                SUM(v.people_vaccinated),
                 SUM(v.people_vaccinated) * 100 / c.population AS porcentagem
             FROM
                 `api.vaccine_application` v
@@ -59,7 +61,7 @@ def select_most_percentage_first(limit):
             WHERE
                 date_field = (SELECT MAX(date_field) FROM `api.vaccine_application`)
             GROUP BY c.name, c.population
-            ORDER BY 2 DESC
+            ORDER BY 3 DESC
             LIMIT %s
         ''', [int(limit)])
 
@@ -73,7 +75,10 @@ def select_most_vaccinated(limit):
         cursor.execute('''
             SELECT
                 c.alpha2_code,
-                SUM(total_vaccinations) FROM `api.vaccine_application` v
+                SUM(total_vaccinations),
+                SUM(total_vaccinations) * 100 / c.population
+            FROM
+                `api.vaccine_application` v
             INNER JOIN
                 `api.country` c ON (c.id = v.country_id)
             WHERE
@@ -167,7 +172,9 @@ def select_data_vaccination(alpha2_code):
                     MAX(date_field) AS 'ULTIMA ATUALIZACAO',
                     SUM(v.people_fully_vaccinated) * 100 / c.population AS 'PORCENTAGEM SEGUNDA DOSE',
                     SUM(v.people_vaccinated) * 100 / c.population AS 'PORCENTAGEM PRIMEIRA DOSE',
-                    SUM(total_vaccinations) AS 'TOTAL VACINACAO' 
+                    SUM(total_vaccinations) AS 'TOTAL VACINACAO',
+                    SUM(people_vaccinated) AS 'PRIMEIRA DOSE',
+                    SUM(people_fully_vaccinated) AS 'SEGUNDA DOSE'
                 FROM
                     `api.vaccine_application` v
                 INNER JOIN
@@ -182,7 +189,9 @@ def select_data_vaccination(alpha2_code):
                     MAX(date_field) AS 'ULTIMA ATUALIZACAO',
                     SUM(v.people_fully_vaccinated) * 100 / SUM(c.population) AS 'PORCENTAGEM SEGUNDA DOSE',
                     SUM(v.people_vaccinated) * 100 / SUM(c.population) AS 'PORCENTAGEM PRIMEIRA DOSE',
-                    SUM(total_vaccinations) AS 'TOTAL VACINACAO' 
+                    SUM(total_vaccinations) AS 'TOTAL VACINACAO',
+                    SUM(people_vaccinated) AS 'PRIMEIRA DOSE',
+                    SUM(people_fully_vaccinated) AS 'SEGUNDA DOSE'
                 FROM
                     `api.vaccine_application` v
                 INNER JOIN

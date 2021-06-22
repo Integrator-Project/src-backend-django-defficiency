@@ -20,16 +20,17 @@ def most(limit, type):
     list_json = list()
     type_enum = MostType(type)
 
-    property_name, result = {
-        MostType.MOST_VACCINATED: ('total', select_most_vaccinated(limit)),
-        MostType.MOST_PERCENTAGE_SECOND: ('percentage', select_most_percentage_second(limit)),
-        MostType.MOST_PERCENTAGE_FIRST: ('percentage', select_most_percentage_first(limit))
+    result = {
+        MostType.MOST_VACCINATED: select_most_vaccinated(limit),
+        MostType.MOST_PERCENTAGE_SECOND: select_most_percentage_second(limit),
+        MostType.MOST_PERCENTAGE_FIRST: select_most_percentage_first(limit)
     }.get(type_enum)
 
-    for alpha2_code, result in result:
+    for alpha2_code, total, percentage in result:
         list_json.append({
             'country': CountrySerializer(Country.objects.get(alpha2_code=alpha2_code)).data,
-            property_name: result
+            'percentage': percentage,
+            'total': total
         })
 
     return {
