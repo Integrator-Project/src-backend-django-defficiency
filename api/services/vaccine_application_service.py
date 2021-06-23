@@ -28,7 +28,7 @@ def most(limit, type):
 
     for alpha2_code, total, percentage in result:
         list_json.append({
-            'country': CountrySerializer(Country.objects.get(alpha2_code=alpha2_code)).data,
+            'country': CountrySerializer(Country.objects.get(alpha2_code=alpha2_code), expand=['translations']).data,
             'percentage': percentage,
             'total': total
         })

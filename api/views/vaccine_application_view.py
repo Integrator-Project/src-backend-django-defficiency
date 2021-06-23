@@ -14,7 +14,7 @@ from ..services import vaccine_application_data, total_per_month, most, world_da
 class VaccineApplicationViewSet(FlexFieldsModelViewSet):
     queryset = VaccineApplication.objects.all()
     serializer_class = VaccineApplicationSerializer
-    permit_list_expands = ['country', 'vaccine']
+    permit_list_expands = ['country', 'vaccine', 'translations']
 
     # @action(methods=['GET'],
     #         detail=False,

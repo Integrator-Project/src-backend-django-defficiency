@@ -20,7 +20,7 @@ def all_data_country(alpha2_code):
     # alternative_vaccine_names = AlternativeNameVaccineSerializer(list_alternative_vaccine_name, many=True)
 
     try:
-        country = CountrySerializer(get_country_by_alpha2(alpha2_code)).data
+        country = CountrySerializer(get_country_by_alpha2(alpha2_code), expand=['translations']).data
     except ObjectDoesNotExist:
         country = {
             'name': 'Earth',
