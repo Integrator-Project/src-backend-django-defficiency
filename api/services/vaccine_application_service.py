@@ -1,7 +1,7 @@
 from api.models import Vaccine, Country
 from api.repositories import select_data_vaccination, select_started_vaccination, \
-    select_total_vaccination_per_month, select_vaccines_applied, select_most_percentage_second, select_most_percentage_first, \
-    select_most_vaccinated, select_world_data
+    select_total_vaccination_per_month, select_vaccines_applied, select_most_percentage_second, \
+    select_most_percentage_first, select_most_vaccinated, select_world_data
 from api.serializers import VaccineSerializer, CountrySerializer
 from utils import MostType
 

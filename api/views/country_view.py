@@ -16,6 +16,16 @@ class CountryViewSet(FlexFieldsModelViewSet):
 
     @action(methods=['GET'],
             detail=False,
+            url_path='test')
+    def test(self, request):
+        post_vaccine_application()
+        post_global_daily_death()
+        post_global_daily_case()
+        post_global_all()
+        return Response(True)
+
+    @action(methods=['GET'],
+            detail=False,
             url_path='all-data')
     def get_all_data(self, request, *args, **kwargs):
         try:
