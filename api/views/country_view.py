@@ -7,6 +7,7 @@ from ..services import *
 
 
 class CountryViewSet(FlexFieldsModelViewSet):
+    permit_list_expands = ['translations', 'alternative_names']
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
 

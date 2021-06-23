@@ -5,7 +5,7 @@ from api.models.alternative_name import AlternativeName
 
 
 class AlternativeNameCountry(AlternativeName):
-    country = models.ForeignKey(to=Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='alternative_names')
 
     class Meta:
         app_label = ApiConfig.name

@@ -13,7 +13,7 @@ class VaccineApplication(Entity):
     people_vaccinated = models.BigIntegerField()
     people_fully_vaccinated = models.BigIntegerField()
     source_url = models.URLField(max_length=1000)
-    country = models.ForeignKey(to=Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='applications')
     vaccine = models.ManyToManyField(to=Vaccine)
 
     def addMultipleVaccines(self, vaccines):

@@ -39,8 +39,8 @@ def most(limit, type):
     }
 
 
-def total_per_month(alpha2_code):
-    result = select_total_vaccination_per_month(alpha2_code)
+def total_per_month(alpha2_code, last_months):
+    result = select_total_vaccination_per_month(alpha2_code, last_months)
     list_json = list()
 
     for total, people, fully, date in result:

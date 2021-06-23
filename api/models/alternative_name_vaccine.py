@@ -5,7 +5,7 @@ from api.models.alternative_name import AlternativeName
 
 
 class AlternativeNameVaccine(AlternativeName):
-    vaccine = models.ForeignKey(to=Vaccine, on_delete=models.CASCADE)
+    vaccine = models.ForeignKey(to=Vaccine, on_delete=models.CASCADE, related_name='alternative_names')
 
     class Meta:
         app_label = ApiConfig.name

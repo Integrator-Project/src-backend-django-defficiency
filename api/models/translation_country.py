@@ -6,7 +6,7 @@ from ..requests.translations_country_request import TranslationsCountryRequest
 
 
 class TranslationsCountry(Entity):
-    country = models.ForeignKey(to=Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='translations')
     de = models.CharField(max_length=100, null=True, blank=True)
     es = models.CharField(max_length=100, null=True, blank=True)
     fr = models.CharField(max_length=100, null=True, blank=True)

@@ -11,7 +11,10 @@ def all_data_country(alpha2_code):
     started = select_started_vaccination(alpha2_code)
 
     list_vaccines = [Vaccine(*x) for x in select_vaccines_applied(alpha2_code)]
-    vaccines = VaccineSerializer(list_vaccines, many=True)
+    vaccines = VaccineSerializer(list_vaccines, many=True, expand=['alternative_names'])
+
+    # list_alternative_vaccine_name = [AlternativeNameVaccine.objects.get(vaccine=vaccine) for vaccine in list_vaccines]
+    # alternative_vaccine_names = AlternativeNameVaccineSerializer(list_alternative_vaccine_name, many=True)
 
     try:
         country = CountrySerializer(get_country_by_alpha2(alpha2_code)).data
@@ -31,7 +34,7 @@ def all_data_country(alpha2_code):
             'total_vaccination': total,
             'people_vaccinated': first,
             'people_fully_vaccinated': second,
-            'vaccines': vaccines.data,
+            'vaccines': vaccines.data
         },
         'daily': {
             'confirmed': {

@@ -139,7 +139,7 @@ def select_vaccines_applied(alpha2_code):
     return row
 
 
-def select_total_vaccination_per_month(alpha2_code):
+def select_total_vaccination_per_month(alpha2_code, last_months):
     with connection.cursor() as cursor:
         cursor.execute('''
         SELECT
@@ -152,7 +152,8 @@ def select_total_vaccination_per_month(alpha2_code):
         INNER JOIN
             `api.country` c ON (va.country_id = c.id) 
         WHERE
-            c.alpha2_code = %s
+            va.date_field BETWEEN DATE_ADD(NOW(), INTERVAL %s MONTH) AND NOW() 
+            AND c.alpha2_code = %s
             AND date_field IN (
                 SELECT
                     CONCAT(ano, '-', mes, '-', dia) 
@@ -168,7 +169,7 @@ def select_total_vaccination_per_month(alpha2_code):
                         c.alpha2_code = %s 
                     GROUP BY 1, 2) as ultimo)
                 ORDER BY date_field
-        ''', [alpha2_code, alpha2_code])
+        ''', [-int(last_months), alpha2_code, alpha2_code])
         row = cursor.fetchall()
 
     return row

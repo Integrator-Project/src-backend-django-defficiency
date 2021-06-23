@@ -14,6 +14,8 @@ from pathlib import Path
 import environ
 
 # Environ read .env file
+from rest_flex_fields.filter_backends import FlexFieldsFilterBackend
+
 environ.Env.read_env()
 env = environ.Env()
 
@@ -35,6 +37,12 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 # REST_FRAMEWORK = {
 #     'EXCEPTION_HANDLER': 'defficiency.api.middleware.exception_handler.custom_exception_handler'
 # }
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        FlexFieldsFilterBackend
+    )
+}
 
 
 # Application definition

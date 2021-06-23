@@ -10,3 +10,7 @@ class VaccineSerializer(FlexFieldsModelSerializer):
             "created_on",
             "updated_on"
         ]
+        expandable_fields = {
+            "alternative_names": ("api.serializers.model.alternative_name_vaccine_serializer"
+                                  ".AlternativeNameVaccineSerializer", {'many': True, "omit": ["vaccine"]})
+        }

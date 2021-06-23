@@ -1,11 +1,8 @@
 from rest_flex_fields import FlexFieldsModelSerializer
-from rest_framework.serializers import ModelSerializer
-
 from api.models import Country
 
 
 class CountrySerializer(FlexFieldsModelSerializer):
-
     class Meta:
         model = Country
         exclude = [
@@ -17,3 +14,10 @@ class CountrySerializer(FlexFieldsModelSerializer):
             "sub_region",
             "native_name"
         ]
+        expandable_fields = {
+            "translations": ("api.serializers.model.translation_country_serializer.TranslationsCountrySerializer",
+                             {"many": True, "omit": ["country"]}),
+            "alternative_names": ("api.serializers.model.alternative_name_country_serializer"
+                                  ".AlternativeNameCountrySerializer",
+                                  {"many": True, "omit": ["country"]})
+        }

@@ -11,5 +11,5 @@ class AlternativeNameVaccineSerializer(FlexFieldsModelSerializer):
             "updated_on"
         ]
         expandable_fields = {
-            "vaccine": "api.serializers.vaccine_serializer.VaccineSerializer"
+            "vaccine": "api.serializers.model.vaccine_serializer.VaccineSerializer"
         }

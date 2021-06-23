@@ -42,8 +42,13 @@ class VaccineApplicationViewSet(FlexFieldsModelViewSet):
             detail=False,
             url_path=r'total-per-month/(?P<alpha2_code>\D+)')
     def get_total_vaccination_month(self, request, *args, **kwargs):
+        try:
+            last_months = int(request.query_params['last-months']) - 1
+        except MultiValueDictKeyError:
+            last_months = 20
+
         code = kwargs.get('alpha2_code')
-        return Response(total_per_month(code))
+        return Response(total_per_month(code, last_months))
 
     @action(methods=['GET'],
             detail=False,
