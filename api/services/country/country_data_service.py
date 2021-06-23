@@ -1,5 +1,8 @@
+import math
+
 from api.repositories import *
 from api.serializers import CountrySerializer, VaccineSerializer
+from utils import remove_acumulative_results
 
 
 def all_data_country(alpha2_code):
@@ -53,7 +56,7 @@ def all_data_country(alpha2_code):
     }
 
 
-def daily_data_per_month(alpha2_code, last_months):
+def daily_data_per_month(alpha2_code, last_months, cumulative):
     try:
         country = CountrySerializer(get_country_by_alpha2(alpha2_code)).data
     except ObjectDoesNotExist:
@@ -62,15 +65,19 @@ def daily_data_per_month(alpha2_code, last_months):
             'population': world_population()[0]
         }
 
-    confirmed = select_total_confirmed_per_month(alpha2_code, last_months)
-    active = select_total_active_per_month(alpha2_code, last_months)
-    recovered = select_total_recovered_per_month(alpha2_code, last_months)
-    death = select_total_death_per_month(alpha2_code, last_months)
+    confirmed_list = list(select_total_confirmed_per_month(alpha2_code, last_months))
+    active_list = list(select_total_active_per_month(alpha2_code, last_months))
+    recovered_list = list(select_total_recovered_per_month(alpha2_code, last_months))
+    death_list = list(select_total_death_per_month(alpha2_code, last_months))
+
+    if not cumulative:
+        for i in (confirmed_list, active_list, recovered_list, death_list):
+            remove_acumulative_results(i)
 
     return {
         'country': country,
-        'confirmed': confirmed,
-        'active': active,
-        'recovered': recovered,
-        'death': death
+        'confirmed': confirmed_list,
+        'active': active_list,
+        'recovered': recovered_list,
+        'death': death_list
     }

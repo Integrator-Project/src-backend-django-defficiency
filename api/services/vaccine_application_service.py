@@ -39,19 +39,35 @@ def most(limit, type):
     }
 
 
-def total_per_month(alpha2_code, last_months):
-    result = select_total_vaccination_per_month(alpha2_code, last_months)
-    list_json = list()
+def total_per_month(alpha2_code, last_months, cumulative):
+    result = list(select_total_vaccination_per_month(alpha2_code, last_months))
+    json_list = list()
+
+    if not cumulative:
+        inverted = result.copy()[::-1]
+        result.clear()
+
+        for previous, current in zip(inverted, inverted[1:]):
+            p_total, p_vaccinated, p_fully, p_date = previous
+            c_total, c_vaccinated, c_fully, c_date = current
+
+            total_result = abs(p_total - c_total)
+            vaccinated_result = abs(p_vaccinated - c_vaccinated)
+            fully_result = abs(p_fully - c_fully)
+
+            result.append((total_result, vaccinated_result, fully_result, p_date))
+
+        result.reverse()
 
     for total, people, fully, date in result:
-        list_json.append({
+        json_list.append({
             'total_vaccination': total,
             'people_vaccinated': people,
             'people_fully_vaccinated': fully,
             'date_field': date
         })
 
-    return list_json
+    return json_list
 
 
 def vaccine_application_data(alpha2_code):

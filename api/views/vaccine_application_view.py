@@ -1,3 +1,5 @@
+from distutils.util import strtobool
+
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_flex_fields import FlexFieldsModelViewSet
 from rest_framework.response import Response
@@ -43,12 +45,18 @@ class VaccineApplicationViewSet(FlexFieldsModelViewSet):
             url_path=r'total-per-month/(?P<alpha2_code>\D+)')
     def get_total_vaccination_month(self, request, *args, **kwargs):
         try:
-            last_months = int(request.query_params['last-months']) - 1
+            cumulative = bool(strtobool(request.query_params['cumulative']))
+        except MultiValueDictKeyError:
+            cumulative = True
+
+        try:
+            last_months = int(request.query_params['last-months'])
+            last_months -= 1 if cumulative else 0
         except MultiValueDictKeyError:
             last_months = 20
 
         code = kwargs.get('alpha2_code')
-        return Response(total_per_month(code, last_months))
+        return Response(total_per_month(code, last_months, cumulative))
 
     @action(methods=['GET'],
             detail=False,

@@ -1,3 +1,6 @@
+import distutils
+from distutils.util import strtobool
+
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_flex_fields import FlexFieldsModelViewSet
 from rest_framework.decorators import action
@@ -32,8 +35,14 @@ class CountryViewSet(FlexFieldsModelViewSet):
             alpha2_code = None
 
         try:
-            last_months = int(request.query_params['last-months']) - 1
+            cumulative = bool(strtobool(request.query_params['cumulative']))
+        except MultiValueDictKeyError:
+            cumulative = True
+
+        try:
+            last_months = int(request.query_params['last-months'])
+            last_months -= 1 if cumulative else 0
         except MultiValueDictKeyError:
             last_months = 6
 
-        return Response(daily_data_per_month(alpha2_code, last_months))
+        return Response(daily_data_per_month(alpha2_code, last_months, cumulative))
