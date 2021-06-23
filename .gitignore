@@ -6,3 +6,5 @@ defficiency/settings/.env
 
 # Ignore cache
 __pycache__
+
+docs/node_modules
